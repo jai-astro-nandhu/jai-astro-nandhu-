@@ -12,6 +12,8 @@
 @media(max-width:700px){.reportGrid{grid-template-columns:1fr}}
 
 .visitingCard{margin-top:18px;border:1px solid #d6b65b;border-radius:22px;padding:22px 20px;background:linear-gradient(135deg,#0c252d,#183f49);box-shadow:0 12px 30px rgba(0,0,0,.18);text-align:center;position:relative;overflow:hidden}.visitingCard:before,.visitingCard:after{content:"";position:absolute;width:90px;height:90px;border:1px solid rgba(244,208,111,.22);border-radius:50%}.visitingCard:before{left:-38px;top:-38px}.visitingCard:after{right:-38px;bottom:-38px}.visitingCard .vcTitle{font-size:18px;font-weight:800;color:#f4d06f;margin-bottom:8px}.visitingCard .vcName{font-size:28px;font-weight:900;letter-spacing:.2px;color:#fff;margin:6px 0}.visitingCard .vcLine{margin:7px 0;color:#dcebed;font-size:15px}.visitingCard .vcPhone{display:inline-block;margin-top:8px;padding:9px 15px;border:1px solid #5f7f86;border-radius:999px;background:#092028;color:#f4d06f;font-weight:900;letter-spacing:.5px}.visitingCard .vcLocation{margin-top:8px;color:#a9c2c8}.visitingCard .vcDivider{width:56px;height:2px;background:#d6b65b;margin:11px auto 8px;border-radius:99px}@media(max-width:700px){.visitingCard{padding:18px 14px}.visitingCard .vcName{font-size:23px}.visitingCard .vcTitle{font-size:16px}}
+
+.serviceBox{margin-top:14px;border:1px solid #d6b65b;border-radius:18px;padding:16px;background:linear-gradient(135deg,#102d35,#143d48)}.serviceBox h3{margin:0 0 8px;color:#f4d06f}.serviceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.serviceCard{border:1px solid #355e68;border-radius:14px;padding:13px;background:#091f27}.serviceCard b{color:#e4c965}.serviceCard p{margin:7px 0;color:#d3e1e4;line-height:1.55}.serviceActions{display:flex;gap:8px;flex-wrap:wrap}.serviceActions a,.serviceActions button{width:auto;text-decoration:none;margin-top:0;padding:10px 14px;border-radius:11px}.waBtn{background:#e4c45f;color:#12242b;font-weight:800}.shareBtn{background:#193f49;color:#e7f0f2;border:1px solid #3b6874}.serviceHint{font-size:12px;color:#9eb8bf;margin-top:8px}@media(max-width:700px){.serviceGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -36,6 +38,32 @@
 <section id="result" class="hidden">
 <div id="birthMeta" class="birthMeta"></div>
 <div class="printRow"><button id="printBtn" class="secondary">🖨️ அச்சிடு / PDF ஆக சேமி</button></div>
+<section class="serviceBox" id="serviceBox">
+  <h3>💼 ஜாதக சேவைகள்</h3>
+  <div class="serviceGrid">
+    <div class="serviceCard">
+      <b>🆓 இலவச அடிப்படை ஜாதகம்</b>
+      <p>ராசி, நவாம்சம், நட்சத்திரம், தசா மற்றும் அடிப்படை பலன்களை இலவசமாக பார்க்கலாம்.</p>
+    </div>
+    <div class="serviceCard">
+      <b>📋 விரிவான ஜாதக ஆலோசனை</b>
+      <p>விரிவான ஜாதக ஆலோசனை / அறிக்கைக்கான கட்டணம்: <strong>₹99</strong></p>
+      <div class="upiBox" style="margin:12px 0;padding:12px;border:1px solid #456b75;border-radius:14px;background:#081b22;text-align:center">
+        <div style="color:#9eb8bf;font-size:12px">UPI ID</div>
+        <div style="font-weight:900;color:#f4d06f;word-break:break-all;margin:4px 0 10px">rajnandhu1995-4@okhdfcbank</div>
+        <img src="upi_99_qr.png" alt="₹99 UPI payment QR" style="width:150px;height:150px;background:#fff;padding:8px;border-radius:12px">
+        <div style="margin-top:10px;font-weight:800">₹99 செலுத்தி விரிவான அறிக்கை பெறலாம்</div>
+        <a class="waBtn" href="upi://pay?pa=rajnandhu1995-4%40okhdfcbank&pn=Jai%20Astro%20Nandhu&am=99&cu=INR" style="display:inline-block;text-decoration:none;margin-top:10px">💳 UPI மூலம் ₹99 செலுத்த</a>
+      </div>
+      <p>பணம் செலுத்திய பிறகு கீழே WhatsApp மூலம் தொடர்பு கொள்ளவும்.</p>
+      <div class="serviceActions">
+        <a id="waConsult" class="waBtn" href="https://wa.me/917339056331" target="_blank" rel="noopener">📱 WhatsApp மூலம் தொடர்பு</a>
+        <button id="shareSite" class="shareBtn" type="button">🔗 Website Share</button>
+      </div>
+    </div>
+  </div>
+  <div class="serviceHint">கட்டணம் மற்றும் சேவை விவரங்களுக்கு Jai Astro Nandhu-வை தொடர்பு கொள்ளவும்.</div>
+</section>
 <div class="tabs">
 <button class="tab active" data-p="summary">சுருக்கம்</button><button class="tab" data-p="planets">கிரகங்கள்</button><button class="tab" data-p="rasi">ராசி</button><button class="tab" data-p="navamsa">நவாம்சம்</button><button class="tab" data-p="nakshatra">நட்சத்திரம்</button><button class="tab" data-p="dasha">தசா</button><button class="tab" data-p="houses">12 பாவங்கள்</button><button class="tab" data-p="palangal">பலன்கள்</button><button class="tab" data-p="fullreport">முழு அறிக்கை</button>
 </div>
@@ -43,7 +71,7 @@
 </section>
 
 <section class="card footer">
-<b>V36 Final Complete:</b> பிறந்த தேதி DD/MM/YYYY order, உலக location search, auto timezone, Swiss Ephemeris + Lahiri sidereal, South Indian Rasi / Navamsa, Nakshatra-Pada, Vimshottari Dasha-Bhukti, 12 பாவங்கள் மற்றும் தமிழ் பலன்கள்.<br>
+<b>Jai Astro Nandhu – Online Jothidam:</b> பிறந்த தேதி DD/MM/YYYY order, உலக location search, auto timezone, Swiss Ephemeris + Lahiri sidereal, South Indian Rasi / Navamsa, Nakshatra-Pada, Vimshottari Dasha-Bhukti, 12 பாவங்கள் மற்றும் தமிழ் பலன்கள்.<br>
 பொதுவான location search-க்கு Open-Meteo geocoding பயன்படுத்தப்படுகிறது. கணக்கீடு server-side Swiss Ephemeris மூலம் நடப்பதால் browser-ல் remote Swiss engine load ஆகி நீண்ட நேரம் நிற்கும் பிரச்சனை இல்லை. ஜோதிட விளக்கங்கள் பாரம்பரிய முறைகளை அடிப்படையாகக் கொண்டவை.
 
 <div class="visitingCard" aria-label="ஜாதக ஆலோசனை தொடர்பு அட்டை">
@@ -180,7 +208,20 @@ function summaryPanel(data){const m=data.planets.find(p=>p.name==='சந்த�
 function displayTime(t){const [hh,mm]=t.split(':').map(Number),ap=hh>=12?'PM':'AM';let h=hh%12;if(h===0)h=12;return `${String(h).padStart(2,'0')}:${String(mm).padStart(2,'0')} ${ap}`}
 function navPlanets(data){return data.planets.map(p=>({name:p.name,sign_index:p.nav_sign_index,sign:p.nav_sign}))}
 function birthMeta(data){$('birthMeta').innerHTML=`<div class="metaItem"><div class="metaLabel">பெயர்</div><div class="metaValue">${esc(data.name||'—')}</div></div><div class="metaItem"><div class="metaLabel">பிறந்த தேதி</div><div class="metaValue">${fmtLocalDate(data.date)}<br><span class="muted">${monthsEn[+data.date.split('-')[1]-1]} ${+data.date.split('-')[2]}, ${data.date.split('-')[0]}</span></div></div><div class="metaItem"><div class="metaLabel">பிறந்த நேரம்</div><div class="metaValue">${displayTime(data.time)}</div></div><div class="metaItem"><div class="metaLabel">பிறந்த இடம்</div><div class="metaValue">${esc(data.place)}</div></div><div class="metaItem"><div class="metaLabel">Time Zone</div><div class="metaValue">${esc(data.timezone)}</div></div>`}
-function render(data){lastData=data;birthMeta(data);$('summary').innerHTML=summaryPanel(data);$('planets').innerHTML=planetTable(data);$('rasi').innerHTML='<h2>ராசி கட்டம்</h2>'+chartHTML(data.planets,data.lagna.sign_index);$('navamsa').innerHTML='<h2>நவாம்ச கட்டம்</h2>'+chartHTML(navPlanets(data),data.lagna.nav_sign_index);$('nakshatra').innerHTML=nakshatraPanel(data);$('dasha').innerHTML=dashaPanel(data);$('houses').innerHTML=housesPanel(data);$('palangal').innerHTML=palangalPanel(data);$('fullreport').innerHTML=fullReportPanel(data);$('result').classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelector('.tab[data-p="summary"]').classList.add('active');$('summary').classList.add('active');}
+function updateServiceLinks(data){
+  const wa=$('waConsult');
+  if(!wa) return;
+  const msg=[
+    'வணக்கம் Jai Astro Nandhu,',
+    'எனக்கு விரிவான ஜாதக ஆலோசனை / அறிக்கை வேண்டும்.',
+    `பெயர்: ${data.name||''}`,
+    `பிறந்த தேதி: ${fmtLocalDate(data.date)}`,
+    `பிறந்த நேரம்: ${displayTime(data.time)}`,
+    `பிறந்த இடம்: ${data.place||''}`
+  ].join('\n');
+  wa.href='https://wa.me/917339056331?text='+encodeURIComponent(msg);
+}
+function render(data){lastData=data;birthMeta(data);updateServiceLinks(data);$('summary').innerHTML=summaryPanel(data);$('planets').innerHTML=planetTable(data);$('rasi').innerHTML='<h2>ராசி கட்டம்</h2>'+chartHTML(data.planets,data.lagna.sign_index);$('navamsa').innerHTML='<h2>நவாம்ச கட்டம்</h2>'+chartHTML(navPlanets(data),data.lagna.nav_sign_index);$('nakshatra').innerHTML=nakshatraPanel(data);$('dasha').innerHTML=dashaPanel(data);$('houses').innerHTML=housesPanel(data);$('palangal').innerHTML=palangalPanel(data);$('fullreport').innerHTML=fullReportPanel(data);$('result').classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelector('.tab[data-p="summary"]').classList.add('active');$('summary').classList.add('active');}
 function renderQuickPlaces(){
   const q=$('quickPlaces'); if(!q)return; q.innerHTML='';
   LOCAL_PLACES.slice(0,8).forEach(p=>{
@@ -285,7 +326,7 @@ async function checkServer(){
 }
 checkServer();
 fillDates();
-renderQuickPlaces();['day','month','year'].forEach(id=>$(id).addEventListener('change',updateDate));$('findPlace').onclick=searchPlace;$('calc').onclick=calculate;$('printBtn').onclick=()=>window.print();$('place').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchPlace()}});document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.p).classList.add('active')});updateDate(); checkHealth();
+renderQuickPlaces();['day','month','year'].forEach(id=>$(id).addEventListener('change',updateDate));$('findPlace').onclick=searchPlace;$('calc').onclick=calculate;$('printBtn').onclick=()=>window.print();$('shareSite').onclick=async()=>{try{if(navigator.share){await navigator.share({title:'Jai Astro Nandhu – தமிழ் ஜோதிடம்',text:'இலவச தமிழ் ஜாதக website',url:window.location.href})}else{await navigator.clipboard.writeText(window.location.href);alert('Website link copy செய்யப்பட்டது.')}}catch(e){}};$('place').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchPlace()}});document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.p).classList.add('active')});updateDate(); checkHealth();
 </script>
 </body>
 </html>
