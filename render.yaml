@@ -2,9 +2,6 @@ services:
   - type: web
     name: jai-astro-nandhu
     runtime: python
-    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python server.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.13.15
+    plan: free
