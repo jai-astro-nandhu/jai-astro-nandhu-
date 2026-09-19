@@ -131,69 +131,77 @@ function nakshatraPanel(data){const m=data.planets.find(p=>p.name==='சந்�
 function dashaPanel(data){let h='<h2>விம்சோத்தரி தசா – புக்தி</h2><p><b>பிறப்பு சந்திர நட்சத்திரம்:</b> <span class="pill">'+esc(data.dasha.birth_nakshatra.name)+' — பாதம் '+data.dasha.birth_nakshatra.pada+'</span></p><p><b>பிறப்பில் மீதமுள்ள தசா:</b> '+esc(data.dasha.rows[0].lord)+' — '+data.dasha.balance_years.toFixed(3)+' ஆண்டுகள்</p>';for(const md of data.dasha.rows){h+=`<details class="dashaBox"><summary><b>${esc(md.lord)} மகாதசை</b> — ${fmtLocalDate(md.start)} முதல் ${fmtLocalDate(md.end)}</summary><table><tr><th>புக்தி</th><th>தொடக்கம்</th><th>முடிவு</th><th>காலம்</th></tr>`;for(const ad of md.bhuktis)h+=`<tr><td>${esc(ad.lord)}</td><td>${fmtLocalDate(ad.start)}</td><td>${fmtLocalDate(ad.end)}</td><td>${ad.years.toFixed(3)} ஆண்டுகள்</td></tr>`;h+='</table></details>'}return h+'<p class="note">தசா காலம் 365.25 நாள் = 1 ஆண்டு என்ற கணக்கில் காட்டப்படுகிறது.</p>'}
 function housesPanel(data){let h='<h2>12 பாவங்கள் — ராசி / கிரக விவரம்</h2><p class="note">லக்னத்தை 1ஆம் பாவமாக வைத்து Whole Sign முறையில் பாவ ராசி, பாவாதிபதி, கிரகங்கள் மற்றும் முக்கிய பொருள்.</p><div class="houseGrid">';for(const x of data.houses){h+=`<div class="houseCard"><h3>${x.house}ஆம் பாவம்</h3><div class="houseLine"><span class="houseLabel">ராசி:</span> <b>${esc(x.sign)}</b></div><div class="houseLine"><span class="houseLabel">பாவாதிபதி:</span> <b>${esc(x.lord)}</b></div><div class="houseLine"><span class="houseLabel">முக்கிய பொருள்:</span> ${esc(x.meaning)}</div><div class="houseLine"><span class="houseLabel">கிரகங்கள்:</span><br>${x.planets.length?x.planets.map(p=>`<span class="housePlanet">${esc(p)}</span>`).join(''):'<span class="muted">இந்த பாவ ராசியில் கிரகம் இல்லை</span>'}</div></div>`}return h+'</div>'}
 function palangalPanel(data){
-  const houseMeanings=[
-    "தன்மை, உடல், சுயநம்பிக்கை மற்றும் வாழ்க்கை அணுகுமுறை",
-    "செல்வம், குடும்பம், பேச்சு, சேமிப்பு மற்றும் உணவு",
-    "முயற்சி, தைரியம், தொடர்பு மற்றும் உடன்பிறப்புகள்",
-    "வீடு, தாய், நிலம், வாகனம் மற்றும் மன அமைதி",
-    "கல்வி, புத்தி, குழந்தைகள், படைப்பாற்றல்",
-    "வேலை, சேவை, போட்டி, கடன் மற்றும் உடல்நலம்",
-    "திருமணம், துணை, கூட்டாண்மை மற்றும் பொதுத் தொடர்பு",
-    "மாற்றம், கூட்டு வளங்கள், ஆயுள் மற்றும் மறைவு சார்ந்த அம்சங்கள்",
-    "பாக்கியம், தந்தை, தர்மம், உயர்கல்வி மற்றும் நீண்ட பயணம்",
-    "தொழில், பதவி, பொறுப்பு மற்றும் சமூக நிலை",
-    "லாபம், நண்பர்கள், தொடர்புகள் மற்றும் ஆசை நிறைவேற்றம்",
-    "செலவு, வெளிநாடு, ஓய்வு, தனிமை மற்றும் ஆன்மிகம்"
-  ];
-  const planetEffect={
-    "சூரியன்":"தலைமை, தன்னம்பிக்கை, அதிகாரம், தந்தை சார்ந்த அம்சங்கள்",
-    "சந்திரன்":"மனம், உணர்வு, பழக்கம், தாய் சார்ந்த அம்சங்கள்",
-    "செவ்வாய்":"தைரியம், செயல், போட்டி, நிலம்/சக்தி சார்ந்த அம்சங்கள்",
-    "புதன்":"புத்தி, கல்வி, கணக்கு, பேச்சு மற்றும் தொடர்பு",
-    "குரு":"அறிவு, ஆசான், பாக்கியம், வளர்ச்சி மற்றும் வழிகாட்டுதல்",
-    "சுக்கிரன்":"உறவு, கலை, வசதி, இன்பம் மற்றும் படைப்பாற்றல்",
-    "சனி":"உழைப்பு, பொறுப்பு, ஒழுக்கம், தாமதம் மற்றும் நிலைத்தன்மை",
-    "ராகு":"புதுமை, ஆசை, வெளிப்புற அனுபவம், வழக்கத்திற்கு மாறான அணுகுமுறை",
-    "கேது":"பற்றின்மை, உள்நோக்கம், ஆய்வு மற்றும் ஆன்மிக அணுகுமுறை"
-  };
   const pByName=n=>data.planets.find(p=>p.name===n);
-  let h='<h2>பலன்கள் — கிரக நிலைகளுடன் இணைந்த விரிவான தமிழ் விளக்கம்</h2>';
-  h+='<div class="warning">இது பாரம்பரிய வேத ஜோதிட முறையில் உருவாக்கப்படும் விளக்கம். கிரக நிலைகளை அடிப்படையாகக் கொண்டு தகவலை ஒருங்கிணைக்கிறது; உறுதியான எதிர்கால உத்தரவாதம் அல்ல.</div>';
-  h+='<div class="detailGrid" style="margin-top:12px">';
-  h+=`<div class="detailCard"><h3>லக்னம்</h3><div><b>${esc(data.lagna.sign)}</b> — ${formatDms(data.lagna.lon)}</div><div class="note">லக்னம் 1ஆம் பாவத்திற்கான அடிப்படை. வாழ்க்கை அணுகுமுறை, உடல் மற்றும் தன்மை பற்றிய வாசிப்பில் பயன்படுத்தப்படுகிறது.</div></div>`;
+  const houseByNo=n=>data.houses.find(h=>h.house===n);
+  const names=ps=>ps.map(p=>p.name).join(', ');
+  const planetEffect={
+    "சூரியன்":"தன்னம்பிக்கை, தலைமை, அதிகாரம், தந்தை மற்றும் நிர்வாகம்",
+    "சந்திரன்":"மனம், உணர்வு, பழக்கம், தாய் மற்றும் மன அமைதி",
+    "செவ்வாய்":"தைரியம், செயல், வேகம், போட்டி, நிலம் மற்றும் முயற்சி",
+    "புதன்":"புத்தி, கல்வி, கணக்கு, பேச்சு, வியாபாரம் மற்றும் தொடர்பு",
+    "குரு":"அறிவு, ஆசான், பாக்கியம், வளர்ச்சி, குடும்ப வழிகாட்டுதல்",
+    "சுக்கிரன்":"உறவு, கலை, வசதி, அழகு, அனுபவம் மற்றும் சமரசம்",
+    "சனி":"உழைப்பு, பொறுப்பு, ஒழுக்கம், தாமதம் மற்றும் நிலைத்தன்மை",
+    "ராகு":"புதுமை, ஆசை, மாற்றம், வெளிப்புற அனுபவம் மற்றும் எதிர்பாராத திருப்பங்கள்",
+    "கேது":"பற்றின்மை, உள்நோக்கம், ஆய்வு, ஆன்மிகம் மற்றும் ஆழமான கவனம்"
+  };
   const moon=pByName('சந்திரன்');
-  h+=`<div class="detailCard"><h3>ஜன்ம சந்திர நிலை</h3><div><b>${esc(moon.sign)}</b> — ${formatDms(moon.deg_in_sign)}</div><div>${esc(moon.nakshatra.name)} / பாதம் ${moon.nakshatra.pada} / அதிபதி ${esc(moon.nakshatra.lord)}</div><div class="note">மனம், உணர்வு மற்றும் தசா தொடக்கத்தை இணைத்து பார்க்கப்படும் முக்கிய நிலை.</div></div>`;
+  const sun=pByName('சூரியன்');
+  const lagna=data.lagna.sign;
+  const keyHouse=(n)=>houseByNo(n)||{sign:'',lord:'',lord_house:null,planets:[],aspected_by:[]};
+  const h2=keyHouse(2), h4=keyHouse(4), h5=keyHouse(5), h7=keyHouse(7), h9=keyHouse(9), h10=keyHouse(10), h11=keyHouse(11), h12=keyHouse(12);
+  const houseText={
+    1:'தன்மை, உடல், சுயநம்பிக்கை மற்றும் வாழ்க்கையை அணுகும் முறை.',
+    2:'குடும்பம், பணநிலை, சேமிப்பு, பேச்சு மற்றும் உணவு தொடர்பான அம்சங்கள்.',
+    3:'முயற்சி, தைரியம், தொடர்பு, திறமை மற்றும் உடன்பிறப்புகள் தொடர்பான அம்சங்கள்.',
+    4:'வீடு, நிலம், வாகனம், தாய் மற்றும் மன அமைதி தொடர்பான அம்சங்கள்.',
+    5:'கல்வி, புத்தி, படைப்பாற்றல், குழந்தைகள் மற்றும் விருப்பத் திறன்கள் தொடர்பான அம்சங்கள்.',
+    6:'வேலை, கடமை, போட்டி, கடன், சேவை மற்றும் உடல்நலத்தை கவனிக்கும் பழக்கம் தொடர்பான அம்சங்கள்.',
+    7:'திருமணம், துணைவர், கூட்டாண்மை, வாடிக்கையாளர் தொடர்பு மற்றும் சமூக உறவு தொடர்பான அம்சங்கள்.',
+    8:'மாற்றம், கூட்டு வளங்கள், ஆய்வு, மறைவு சார்ந்த விஷயங்கள் மற்றும் வாழ்க்கையின் ஆழமான பகுதிகள்.',
+    9:'பாக்கியம், உயர்கல்வி, ஆசான், தந்தை, தர்மம் மற்றும் நீண்ட பயணம் தொடர்பான அம்சங்கள்.',
+    10:'தொழில், பதவி, பொறுப்பு, நிர்வாகம் மற்றும் சமூகப் பெயர் தொடர்பான அம்சங்கள்.',
+    11:'லாபம், நண்பர்கள், தொடர்புகள், ஆதரவு வட்டம் மற்றும் இலக்கு நிறைவேற்றம் தொடர்பான அம்சங்கள்.',
+    12:'செலவு, வெளிநாடு, ஓய்வு, தனிமை, உறக்கம் மற்றும் ஆன்மிக நோக்கு தொடர்பான அம்சங்கள்.'
+  };
+  let h='<h2>பலன்கள் — தெளிவான விரிவான தமிழ் வாசிப்பு</h2>';
+  h+='<div class="warning">கீழே உள்ளவை பாரம்பரிய ஜோதிடக் கோட்பாடுகளை அடிப்படையாகக் கொண்ட சாத்தியமான விளக்கங்கள். இவை உறுதியான எதிர்கால உத்தரவாதம் அல்ல; முக்கிய முடிவுகளுக்கு இதை மட்டும் அடிப்படையாகக் கொள்ள வேண்டாம்.</div>';
+
+  h+='<div class="detailGrid" style="margin-top:12px">';
+  h+=`<div class="detailCard"><h3>🌟 மொத்த தன்மை</h3><p><b>${esc(lagna)} லக்னம்</b> இருப்பதால் வாழ்க்கையில் தன்னுடைய முடிவுகளை தானே எடுக்க வேண்டும் என்ற எண்ணம், தனிப்பட்ட அடையாளம் மற்றும் செயல்முறை முக்கியமாகக் கருதப்படுகிறது.</p><p>சூரியன் ${esc(sun?.sign||'')} ராசியிலும், சந்திரன் ${esc(moon?.sign||'')} ராசியிலும் இருப்பதை இணைத்து பார்க்கும்போது வெளிப்புற செயல்பாடு மற்றும் உள்ளுணர்வு இரண்டையும் சமநிலைப்படுத்துவது முக்கியமாக அமையும்.</p></div>`;
+  h+=`<div class="detailCard"><h3>💰 பணம் & குடும்பம்</h3><p><b>2ஆம் பாவம்:</b> ${esc(h2.sign)}. பணம் சம்பாதிப்பதை மட்டும் விட சேமிப்பு, குடும்ப பொறுப்பு மற்றும் பேச்சு முறை முக்கிய பங்கு வகிக்கும் பகுதி.</p><p>${h2.planets&&h2.planets.length?`இந்த பாவத்தில் ${esc(names(h2.planets))} இருப்பதால், ${esc(h2.planets.map(p=>planetEffect[p.name]||'').join('; '))} ஆகியவை பணம் மற்றும் குடும்ப விஷயங்களுடன் இணைந்து பார்க்கப்படுகின்றன.`:'இந்த பாவத்தில் நேரடி கிரகம் இல்லாததால், பாவாதிபதியின் நிலை மற்றும் பார்வைகளை இணைத்து வாசிப்பது முக்கியம்.'}</p></div>`;
+  h+=`<div class="detailCard"><h3>💼 தொழில் & வளர்ச்சி</h3><p><b>10ஆம் பாவம்:</b> ${esc(h10.sign)}. தொழிலில் பொறுப்பு ஏற்கும் திறன், நிலைத்தன்மை மற்றும் மக்கள் தொடர்பு எப்படி இருக்கும் என்பதை இந்த பகுதி காட்டுகிறது.</p><p>${h10.lord_house?`10ஆம் பாவாதிபதி ${esc(h10.lord)} ${h10.lord_house}ஆம் பாவத்துடன் இணைந்திருப்பதால், தொழில் விஷயங்கள் அந்த பாவத்தின் கருப்பொருள்களுடன் தொடர்புபடுத்திப் பார்க்கப்படுகின்றன.`:''} ${h10.planets&&h10.planets.length?`அங்கு ${esc(names(h10.planets))} இருப்பதால் ${esc(h10.planets.map(p=>planetEffect[p.name]||'').join('; '))} போன்ற குணங்கள் வெளிப்படலாம்.`:''}</p></div>`;
+  h+=`<div class="detailCard"><h3>❤️ திருமணம் & உறவு</h3><p><b>7ஆம் பாவம்:</b> ${esc(h7.sign)}. உறவில் பேசித் தீர்ப்பது, ஒருவரை ஒருவர் புரிந்துகொள்வது, கூட்டாக முடிவு எடுப்பது போன்றவை முக்கியமானவை.</p><p>${h7.lord_house?`7ஆம் பாவாதிபதி ${esc(h7.lord)} ${h7.lord_house}ஆம் பாவத்துடன் தொடர்புடையதால், திருமண/கூட்டாண்மை விஷயங்கள் அந்த பாவத்தின் அம்சங்களோடும் இணைந்து பார்க்கப்படுகின்றன.`:'7ஆம் பாவாதிபதியின் நிலையை கூடுதல் கவனத்துடன் பார்க்க வேண்டும்.'}</p></div>`;
+  h+=`<div class="detailCard"><h3>📚 கல்வி & திறமை</h3><p><b>5ஆம் பாவம்:</b> ${esc(h5.sign)}. கற்றல், நினைவாற்றல், படைப்பாற்றல் மற்றும் தனித்திறமைகளை வளர்ப்பதில் தொடர்ச்சியான முயற்சி உதவும்.</p><p>${h5.planets&&h5.planets.length?`இந்த பாவத்தில் ${esc(names(h5.planets))} இருப்பதால் ${esc(h5.planets.map(p=>planetEffect[p.name]||'').join('; '))} சார்ந்த திறன்களுக்கு முக்கியத்துவம் கிடைக்கலாம்.`:'5ஆம் பாவாதிபதி இருக்கும் இடத்தையும் அதற்கான பார்வைகளையும் இணைத்து பார்க்க வேண்டும்.'}</p></div>`;
+  h+=`<div class="detailCard"><h3>🏠 வீடு & சொத்து</h3><p><b>4ஆம் பாவம்:</b> ${esc(h4.sign)}. வீடு, குடும்ப சூழல், சொத்து மற்றும் மன அமைதி போன்றவற்றை கவனிக்க வேண்டிய பகுதி.</p><p>${h4.lord_house?`4ஆம் பாவாதிபதி ${esc(h4.lord)} ${h4.lord_house}ஆம் பாவத்தில் இருப்பதால், வீடு/சொத்து தொடர்பான விஷயங்கள் அந்த பாவத்துடன் இணைந்து பார்க்கப்படுகின்றன.`:''} ${h4.planets&&h4.planets.length?`இந்த பாவத்தில் ${esc(names(h4.planets))} இருப்பதால் அவர்களின் காரகங்களும் சேர்ந்து வாசிக்கப்படுகின்றன.`:''}</p></div>`;
   h+='</div>';
 
-  h+='<h3 style="margin-top:18px">கிரக நிலை → பாவ இணைப்பு</h3><div class="planetExplain">';
-  for(const p of data.planets){
-    h+=`<div class="explainCard"><h4>${esc(p.name)} — ${esc(p.sign)} (${p.house}ஆம் பாவம்)</h4>`+
-      `<div><b>பாகை:</b> ${formatDms(p.deg_in_sign)} • <b>நிலை:</b> ${p.retrograde?'வக்ரம்':'நேர்ச் சஞ்சாரம்'}</div>`+
-      `<div><b>நட்சத்திரம்:</b> ${esc(p.nakshatra.name)} / ${p.nakshatra.pada}ஆம் பாதம்</div>`+
-      `<div><b>ராசி நிலை:</b> ${esc(p.dignity||'சாதாரண நிலை')}</div>`+
-      `<div class="note" style="margin-top:6px">${esc(planetEffect[p.name]||'')}</div></div>`;
+  h+='<div class="detailCard" style="margin-top:14px"><h3>🔎 முக்கிய வாழ்க்கைத் துறைகள் — சுருக்கமாக</h3><div class="detailGrid">';
+  const summaryRows=[
+    ['தொழில்',h10,'பணி, பதவி, பொறுப்பு'],
+    ['வருமானம்',h11,'லாபம், தொடர்புகள், ஆதரவு'],
+    ['குடும்பம்',h2,'பணம், பேச்சு, சேமிப்பு'],
+    ['திருமணம்',h7,'உறவு, துணை, கூட்டாண்மை'],
+    ['கல்வி/குழந்தைகள்',h5,'கல்வி, புத்தி, படைப்பாற்றல்'],
+    ['பாக்கியம்',h9,'உயர்கல்வி, ஆசான், பயணம்'],
+    ['வெளிநாடு/தனிமை',h12,'பயணம், ஓய்வு, ஆன்மிகம்']
+  ];
+  for(const [title,x,sub] of summaryRows){
+    h+=`<div class="explainCard"><h4>${title}</h4><div><b>${esc(x.sign)}</b> ராசி • ${esc(sub)}</div><div class="note">${x.lord_house?`பாவாதிபதி ${esc(x.lord)} → ${x.lord_house}ஆம் பாவம். `:''}${x.planets&&x.planets.length?`இந்த பாவத்தில்: ${esc(names(x.planets))}.`:'நேரடி கிரக அமைப்பு இல்லை; அதிபதி மற்றும் பார்வைகளை இணைத்து வாசிக்க வேண்டும்.'}</div></div>`;
   }
-  h+='</div>';
+  h+='</div></div>';
 
-  if(data.conjunctions && data.conjunctions.length){
-    h+='<h3 style="margin-top:18px">ஒரே ராசியில் உள்ள கிரகச் சேர்க்கைகள்</h3><div class="detailGrid">';
-    for(const c of data.conjunctions){
-      h+=`<div class="detailCard"><b>${esc(c.sign)}</b><div style="margin-top:7px">${c.planets.map(esc).join(' + ')}</div><div class="note">ஒரே ராசியில் இருப்பதால் இக்கிரகங்களின் காரகங்கள் ஒன்றுடன் ஒன்று இணைந்து வாசிக்கப்படும்.</div></div>`;
-    }
-    h+='</div>';
-  }
-
-  h+='<h3 style="margin-top:18px">பாவ வாரியான விரிவான விளக்கம்</h3><div class="houseGrid">';
+  h+='<h3 style="margin-top:18px">🧭 12 பாவங்கள் — தெளிவான விளக்கம்</h3><div class="houseGrid">';
   for(const x of data.houses){
     const occupants=x.planets.map(pByName).filter(Boolean);
-    let desc=houseMeanings[x.house-1]+'. ';
+    let desc=houseText[x.house]+ ' ';
     if(occupants.length){
-      desc += 'இந்த பாவ ராசியில் '+occupants.map(p=>p.name).join(', ')+' இருப்பதால், '+occupants.map(p=>planetEffect[p.name]).join('; ')+' ஆகிய காரகங்கள் இந்த பாவ விஷயங்களில் இணைந்து பார்க்கப்படுகின்றன.';
+      desc += `இந்த பாவத்தில் ${occupants.map(p=>p.name).join(', ')} இருப்பதால், ${occupants.map(p=>planetEffect[p.name]||'').join('; ')} ஆகியவை இணைந்து பார்க்கப்படுகின்றன. `;
     } else {
-      desc += 'இந்த பாவ ராசியில் நேரடியாக கிரகம் இல்லை; எனவே பாவாதிபதி இருக்கும் பாவம் மற்றும் கிடைக்கும் பார்வைகள் முக்கியமாக இணைத்து பார்க்கப்படுகின்றன.';
+      desc += 'இந்த பாவத்தில் நேரடி கிரகம் இல்லாததால், பாவாதிபதி இருக்கும் இடம் மற்றும் பார்வைகள் முக்கியமாக பார்க்கப்படுகின்றன. ';
     }
-    if(x.lord_house){ desc += ` பாவாதிபதி ${x.lord} ${x.lord_house}ஆம் பாவத்தில் இருப்பதால், இந்த பாவ விஷயம் ${x.lord_house}ஆம் பாவ விஷயங்களுடன் தொடர்புபடுத்தப்படுகிறது.`; }
-    if(x.aspected_by && x.aspected_by.length){ desc += ` வழக்கமான பார்வை முறையில் ${x.aspected_by.join(', ')} இக்கட்டத்தை பார்க்கின்றனர்.`; }
+    if(x.lord_house){ desc += `பாவாதிபதி ${x.lord} ${x.lord_house}ஆம் பாவத்துடன் தொடர்பு கொண்டிருப்பதால், இந்த பாவத்தின் விஷயங்கள் அந்த பாவத்தின் அம்சங்களோடு இணைந்து வெளிப்படலாம். `; }
+    if(x.aspected_by && x.aspected_by.length){ desc += `வழக்கமான பார்வை முறையில் ${x.aspected_by.join(', ')} இந்த பாவத்தை பார்க்கிறது; எனவே அவர்களின் காரகங்களையும் சேர்த்து கவனிக்கலாம்.`; }
     h+=`<div class="houseCard"><h3>${x.house}ஆம் பாவம் — ${esc(x.sign)}</h3>`+
       `<div class="houseLine"><span class="houseLabel">பாவாதிபதி:</span> <b>${esc(x.lord)}</b>`+(x.lord_house?` — ${x.lord_house}ஆம் பாவம்`:'')+`</div>`+
       `<div class="houseLine"><span class="houseLabel">கிரகங்கள்:</span> ${occupants.length?occupants.map(p=>`<span class="housePlanet">${esc(p.name)} ${formatDms(p.deg_in_sign)}</span>`).join(''):'<span class="muted">நேரடியாக கிரகம் இல்லை</span>'}</div>`+
@@ -201,7 +209,8 @@ function palangalPanel(data){
       `<p>${esc(desc)}</p></div>`;
   }
   h+='</div>';
-  h+='<div class="detailCard" style="margin-top:14px"><h3>எப்படி வாசிக்கப்படுகிறது?</h3><p class="note">பலன் பகுதியை உருவாக்கும்போது பாவ ராசி, பாவாதிபதி இருக்கும் பாவம், அந்த பாவத்தில் உள்ள கிரகங்கள், கிரகத்தின் ராசி நிலை, நட்சத்திரம் மற்றும் வழக்கமான பார்வைகள் ஆகியவற்றை ஒன்றாக இணைக்கிறது. இதனால் “பாவம் மட்டும்” அல்லது “கிரகம் மட்டும்” என்ற தனிப்பட்ட விளக்கத்தை விட ஒருங்கிணைந்த தகவல் கிடைக்கும்.</p></div>';
+
+  h+='<div class="detailCard" style="margin-top:14px"><h3>✅ நடைமுறை புரிதல்</h3><p>இந்த பலன்களைப் படிக்கும்போது ஒரு கிரகத்தை மட்டும் வைத்து முடிவு செய்யாமல், லக்னம், பாவம், பாவாதிபதி, கிரக நிலை, நட்சத்திரம் மற்றும் பார்வைகள் ஆகியவற்றை இணைத்துப் பார்க்கலாம். குறிப்பிட்ட பலன் வாழ்க்கையில் எப்போது வெளிப்படும் என்பதைப் புரிந்துகொள்ள தசா–புக்தி காலங்களையும் தனியாக பார்க்க வேண்டும்.</p><p class="note">இது பாரம்பரிய ஜோதிட விளக்கத்திற்கான தகவல். பணம், உடல்நலம், திருமணம் அல்லது சட்டம் போன்ற முக்கிய முடிவுகளில் இதை ஒரே ஆதாரமாக பயன்படுத்த வேண்டாம்.</p></div>';
   return h;
 }
 function summaryPanel(data){const m=data.planets.find(p=>p.name==='சந்திரன்');return `<h2>ஜாதக சுருக்கம்</h2><div class="metricGrid"><div class="metric"><b>லக்னம்</b>${esc(data.lagna.sign)}<br><span class="small">${formatDms(data.lagna.lon)}</span></div><div class="metric"><b>சந்திர ராசி</b>${esc(m.sign)}<br><span class="small">${formatDms(m.lon)}</span></div><div class="metric"><b>ஜன்ம நட்சத்திரம்</b>${esc(m.nakshatra.name)}<br><span class="small">பாதம் ${m.nakshatra.pada}</span></div><div class="metric"><b>அயனாம்சம்</b>${data.ayanamsa.toFixed(6)}°</div></div><div class="detailCard" style="margin-top:12px"><div><b>பிறந்த தேதி:</b> ${fmtLocalDate(data.date)} — ${monthsEn[+data.date.split('-')[1]-1]} ${+data.date.split('-')[2]}, ${data.date.split('-')[0]}</div><div><b>பிறந்த நேரம்:</b> ${displayTime(data.time)}</div><div><b>பிறந்த இடம்:</b> ${esc(data.place)}</div><div><b>Time Zone:</b> ${esc(data.timezone)}</div><div><b>UTC:</b> ${formatUtc(data.utc)}</div></div><details style="margin-top:12px"><summary class="pill">Calculation details</summary><p class="note">Latitude: ${Number(data.lat).toFixed(6)} • Longitude: ${Number(data.lon).toFixed(6)} • Julian Day: ${data.jd.toFixed(6)}</p></details>`}
